@@ -1,0 +1,16 @@
+id;question;sql_reference
+1;Quel est le chiffre d'affaires total ?;SELECT ROUND(SUM(montant_total) / 1e6, 1) AS ca_millions_fcfa FROM v_ventes
+2;Quel est le chiffre d'affaires par année ?;SELECT annee, ROUND(SUM(montant_total) / 1e6, 1) AS ca_millions_fcfa FROM v_ventes GROUP BY annee ORDER BY annee
+3;Quel est le CA mois par mois en 2026 ?;SELECT mois, ROUND(SUM(montant_total) / 1e6, 1) AS ca_millions_fcfa FROM v_ventes WHERE annee = 2026 GROUP BY mois ORDER BY mois
+4;Combien de commandes avons-nous vendues par ville ?;SELECT ville, COUNT(*) AS nb_commandes FROM v_ventes GROUP BY ville ORDER BY nb_commandes DESC
+5;Quel est le panier moyen par ville ?;SELECT ville, ROUND(AVG(montant_total)) AS panier_moyen_fcfa FROM v_ventes GROUP BY ville ORDER BY panier_moyen_fcfa DESC
+6;Quels sont les 10 vendeurs qui font le plus de chiffre d'affaires ?;SELECT vendeur, ROUND(SUM(montant_ligne) / 1e6, 1) AS ca_millions_fcfa FROM v_lignes_ventes GROUP BY vendeur ORDER BY SUM(montant_ligne) DESC LIMIT 10
+7;Quelles sont les 5 catégories qui rapportent le plus ?;SELECT categorie_principale, ROUND(SUM(montant_ligne) / 1e6, 1) AS ca_millions_fcfa FROM v_lignes_ventes GROUP BY categorie_principale ORDER BY SUM(montant_ligne) DESC LIMIT 5
+8;Quels sont les 10 articles les plus vendus en quantité ?;SELECT article, SUM(quantite) AS quantite_vendue FROM v_lignes_ventes GROUP BY article ORDER BY quantite_vendue DESC LIMIT 10
+9;Combien de clients différents ont acheté chez nous ?;SELECT COUNT(DISTINCT client_id) AS nb_clients FROM v_ventes
+10;Combien de clients ont commandé au moins deux fois ?;SELECT COUNT(*) AS nb_clients_fideles FROM (SELECT client_id FROM v_ventes GROUP BY client_id HAVING COUNT(*) >= 2)
+11;Quel est notre taux d'annulation ?;SELECT ROUND(100.0 * SUM(CASE WHEN statut = 'Annulée' THEN 1 ELSE 0 END) / COUNT(*), 1) AS taux_annulation_pct FROM commandes
+12;Comment se répartissent les commandes par statut ?;SELECT statut, COUNT(*) AS nb_commandes FROM commandes GROUP BY statut ORDER BY nb_commandes DESC
+13;Quel est le CA de chaque commune d'Abidjan ?;SELECT commune, ROUND(SUM(montant_total) / 1e6, 1) AS ca_millions_fcfa FROM v_ventes WHERE ville = 'Abidjan' GROUP BY commune ORDER BY SUM(montant_total) DESC
+14;Quel mois de 2025 a fait le meilleur chiffre d'affaires ?;SELECT mois, ROUND(SUM(montant_total) / 1e6, 1) AS ca_millions_fcfa FROM v_ventes WHERE annee = 2025 GROUP BY mois ORDER BY SUM(montant_total) DESC LIMIT 1
+15;Combien de commandes ont un montant suspect ?;SELECT COUNT(*) AS nb_commandes_suspectes FROM commandes WHERE montant_suspect

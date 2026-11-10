@@ -1,0 +1,14 @@
+# À renommer en .gitignore (avec le point) à la racine de vrtx-text2sql.
+# Tout ce qui est listé ici ne part JAMAIS sur GitHub.
+
+# Secrets
+.env
+.streamlit/secrets.toml
+
+# Environnement Python
+.venv/
+__pycache__/
+
+# Données : on n'envoie QUE la base anonymisée
+data/*
+!data/marketplace.duckdb
